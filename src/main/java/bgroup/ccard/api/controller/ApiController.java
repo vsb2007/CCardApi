@@ -1,9 +1,6 @@
 package bgroup.ccard.api.controller;
 
 import bgroup.ccard.api.apiModel.Balance;
-import bgroup.ccard.api.apiModel.Greeting;
-
-
 import bgroup.ccard.api.apiModel.Transactions;
 import bgroup.ccard.api.mapper.CardBalanceMapper;
 import bgroup.ccard.api.mapper.CardTransactionsMapper;
@@ -21,26 +18,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-
 
 @RestController
 public class ApiController {
     static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
     @Autowired
     CardBalanceMapper cardBalanceMapper;
     @Autowired
     CardTransactionsMapper cardTransactionsMapper;
-
-    @RequestMapping(value = {"greeting"})
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-
-        return new Greeting(counter.incrementAndGet(),
-                String.format(template, name));
-    }
 
     @RequestMapping(value = {"user/balance"}, method = RequestMethod.GET)
     public Balance userBalace(@RequestParam(value = "card_number", defaultValue = "null") String cardNumber) {
