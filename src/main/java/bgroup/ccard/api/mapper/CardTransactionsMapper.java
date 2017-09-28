@@ -105,4 +105,94 @@ public interface CardTransactionsMapper {
             @Param(value = "cardNumber") String cardNumber
             , @Param(value = "dateStart") String dateStart
             , @Param(value = "dateEnd") String dateEnd);
+
+
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "date", column = "date_tr"),
+            @Result(property = "operation", column = "operation"),
+            @Result(property = "amount", column = "amount"),
+            @Result(property = "station", column = "station")
+    })
+    @Select("SELECT @id := @id + 1 AS id\n" +
+            ", ss.*\n" +
+            "from \n" +
+            "(\n" +
+            "SELECT\n" +
+            "AccountProtocol.TransferDatetime as date_tr,\n" +
+            "'withdraw' as operation,\n" +
+            "round(AccountProtocol.TransferBonus,2) as amount,\n" +
+            "shops.ShopName as station\n" +
+            "from\n" +
+            "card\n" +
+            "left join synthetic_account ON synthetic_account.PersonKey = card.PersonKey\n" +
+            "left join AccountProtocol On AccountProtocol.SourceAccountKey = synthetic_account.SyntheticAccountKey\n" +
+            "left join shops ON AccountProtocol.ShopKey = shops.shopKey\n" +
+            "where ElectronicNumber = #{cardNumber}\n" +
+            "union\n" +
+            "SELECT\n" +
+            "bonusprotocol.BonusChangeDatetime as date_tr,\n" +
+            "'admission' as operation,\n" +
+            "round(bonusprotocol.ChargeBonusSum,2) as amount,\n" +
+            "shops.ShopName as station\n" +
+            "from\n" +
+            "card\n" +
+            "left join synthetic_account ON synthetic_account.PersonKey = card.PersonKey\n" +
+            "left join bonusprotocol On bonusprotocol.SyntheticAccountKey = synthetic_account.SyntheticAccountKey\n" +
+            "left join shops ON bonusprotocol.ShopKey = shops.shopKey\n" +
+            "where ElectronicNumber =  #{cardNumber}\n" +
+            ")ss, (select @id:=0) AS z\n" +
+            "where \n" +
+            "ss.station = #{station}\n" +
+            "order by ss.date_tr\n"
+    )
+    List<CardTransactions> findCardTransactionsByNumberAndStation(
+            @Param(value = "cardNumber") String cardNumber
+            , @Param(value = "station") String station
+    );
+
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "date", column = "date_tr"),
+            @Result(property = "operation", column = "operation"),
+            @Result(property = "amount", column = "amount"),
+            @Result(property = "station", column = "station")
+    })
+    @Select("SELECT @id := @id + 1 AS id\n" +
+            ", ss.*\n" +
+            "from \n" +
+            "(\n" +
+            "SELECT\n" +
+            "AccountProtocol.TransferDatetime as date_tr,\n" +
+            "'withdraw' as operation,\n" +
+            "round(AccountProtocol.TransferBonus,2) as amount,\n" +
+            "shops.ShopName as station\n" +
+            "from\n" +
+            "card\n" +
+            "left join synthetic_account ON synthetic_account.PersonKey = card.PersonKey\n" +
+            "left join AccountProtocol On AccountProtocol.SourceAccountKey = synthetic_account.SyntheticAccountKey\n" +
+            "left join shops ON AccountProtocol.ShopKey = shops.shopKey\n" +
+            "where ElectronicNumber = #{cardNumber}\n" +
+            "union\n" +
+            "SELECT\n" +
+            "bonusprotocol.BonusChangeDatetime as date_tr,\n" +
+            "'admission' as operation,\n" +
+            "round(bonusprotocol.ChargeBonusSum,2) as amount,\n" +
+            "shops.ShopName as station\n" +
+            "from\n" +
+            "card\n" +
+            "left join synthetic_account ON synthetic_account.PersonKey = card.PersonKey\n" +
+            "left join bonusprotocol On bonusprotocol.SyntheticAccountKey = synthetic_account.SyntheticAccountKey\n" +
+            "left join shops ON bonusprotocol.ShopKey = shops.shopKey\n" +
+            "where ElectronicNumber =  #{cardNumber}\n" +
+            ")ss, (select @id:=0) AS z\n" +
+            "where ss.date_tr >= #{dateStart} and ss.date_tr < #{dateEnd} + interval 1 day\n" +
+            "and ss.station = #{station}\n" +
+            "order by ss.date_tr\n"
+    )
+    List<CardTransactions> findCardTransactionsByNumberAndDateAndStation(
+            @Param(value = "cardNumber") String cardNumber
+            , @Param(value = "dateStart") String dateStart
+            , @Param(value = "dateEnd") String dateEnd
+            , @Param(value = "station") String station);
 }
