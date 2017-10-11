@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static bgroup.ccard.api.controller.HelpFunctions.getRightShortNumber;
+
 @RestController
 public class ApiController {
     static final Logger logger = LoggerFactory.getLogger(ApiController.class);
@@ -34,22 +36,7 @@ public class ApiController {
         else return new Balance("error", "ничего не найдено", 0.0);
     }
 
-    private String getRightShortNumber(String cardNumber) {
-        if (cardNumber == null) return null;
-        //char[] card = cardNumber.toCharArray();
-        String card = null;
-        if (cardNumber.length() == 8) {
-            card = cardNumber.substring(2, 8);
-            try {
-                int i = Integer.parseInt(card);
-                return i + "";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-        return null;
-    }
+
 
     @RequestMapping(value = {"api/user/transactions"}, method = RequestMethod.POST)
     public Transactions getTransactions(

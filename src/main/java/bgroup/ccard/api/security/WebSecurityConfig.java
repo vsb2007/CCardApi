@@ -12,10 +12,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.savedrequest.NullRequestCache;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 @Configuration
@@ -98,17 +101,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
         http.addFilterBefore(filter, CsrfFilter.class);
+        RequestMatcher csrfRequestMatcher = new RequestMatcher() {
 
+            private RegexRequestMatcher requestMatcher =
+                    new RegexRequestMatcher("/api/.*", null);
+
+            @Override
+            public boolean matches(HttpServletRequest request) {
+
+                // Enable the CSRF
+                if(requestMatcher.matches(request))
+                    return true;
+
+                // You can add here any other rule on the request object, returning
+                // true if the CSRF must be enabled, false otherwise
+                // ....
+
+                // No CSRF for other requests
+                return false;
+            }
+
+        }; // new RequestMatcher
         http
-                /*
-                .authorizeRequests()
-                .and()
-                .formLogin().loginPage("/api/auth").permitAll()
-                .and()
-                .csrf()
-                .and()
-                .exceptionHandling().accessDeniedPage("/Access_Denied")
-                */
                 .authorizeRequests()
                 .antMatchers("/api/auth").permitAll()
                 //.antMatchers("/api/greeting").permitAll()
@@ -118,7 +132,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestCache(new NullRequestCache())
                 .and()
                 .csrf()
-                .ignoringAntMatchers("/api/*")
+                .and().csrf().ignoringAntMatchers("/api/auth")
+                .and().csrf().requireCsrfProtectionMatcher(csrfRequestMatcher)
         ;
     }
 }

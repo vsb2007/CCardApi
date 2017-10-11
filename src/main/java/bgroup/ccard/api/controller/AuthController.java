@@ -44,12 +44,12 @@ public class AuthController {
         }
     */
     @RequestMapping(value = {"api/auth"}, method = RequestMethod.POST)
-    public CustomHttpSessionStatus loginJson(@RequestBody User user) {
+    public CustomHttpSessionStatus loginJson(@RequestBody User user,HttpServletRequest request) {
         User user1 = null;
         if (user != null) {
             user1 = findUser(user.getUsername());
         }
-        CustomHttpSessionStatus customHttpSessionStatus = getHttpCustomSessionStatus(user1, user.getPassword());
+        CustomHttpSessionStatus customHttpSessionStatus = getHttpCustomSessionStatus(user1, user.getPassword(),request);
         return customHttpSessionStatus;
     }
 
@@ -63,7 +63,7 @@ public class AuthController {
         return user;
     }
 
-    private CustomHttpSessionStatus getHttpCustomSessionStatus(User user, String password) {
+    private CustomHttpSessionStatus getHttpCustomSessionStatus(User user, String password, HttpServletRequest request) {
         if (user != null) {
             if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
                 addRole(user);
@@ -74,10 +74,11 @@ public class AuthController {
         CustomHttpSessionStatus httpSessionStatus = null;
         Authentication auth = null;
         if (user == null) {
-            httpSessionStatus = new CustomHttpSessionStatus(false, null, "Не правильные логин или пароль");
+            httpSessionStatus = new CustomHttpSessionStatus(false, null, null, "Не правильные логин или пароль");
             auth = new UsernamePasswordAuthenticationToken(null, null, null);
         } else {
-            httpSessionStatus = new CustomHttpSessionStatus(true, user.getUsername(), "ok");
+            CsrfToken token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+            httpSessionStatus = new CustomHttpSessionStatus(true, user.getUsername(), token, "ok");
 
             auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         }
@@ -86,9 +87,10 @@ public class AuthController {
         return httpSessionStatus;
     }
 
-    @RequestMapping(value="/api/auth/csrf-token", method=RequestMethod.GET)
-    public @ResponseBody CsrfToken getCsrfToken(HttpServletRequest request) {
-        CsrfToken token = (CsrfToken)request.getAttribute(CsrfToken.class.getName());
+    @RequestMapping(value = "/api/auth/csrf-token", method = RequestMethod.GET)
+    public @ResponseBody
+    CsrfToken getCsrfToken(HttpServletRequest request) {
+        CsrfToken token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         return token;
     }
 
