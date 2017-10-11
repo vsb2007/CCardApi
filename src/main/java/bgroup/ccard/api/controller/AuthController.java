@@ -25,31 +25,18 @@ import java.util.List;
 @RestController
 public class AuthController {
     static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-    private static final String ATTRIBUTE_USER_KEY = "user";
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     UserMapper userMapper;
 
-    /*
-        @RequestMapping(value = {"api/auth"}, method = RequestMethod.POST)
-        public CustomHttpSessionStatus login(@RequestParam(value = "username", defaultValue = "") String username,
-                                             @RequestParam(value = "password", defaultValue = "null") String password) {
-
-            User user = null;
-            if (username != null && !username.equals(""))
-                user = findUser(username);
-            CustomHttpSessionStatus httpSessionStatus = getHttpCustomSessionStatus(user, password);
-            return httpSessionStatus;
-        }
-    */
     @RequestMapping(value = {"api/auth"}, method = RequestMethod.POST)
-    public CustomHttpSessionStatus loginJson(@RequestBody User user,HttpServletRequest request) {
+    public CustomHttpSessionStatus loginJson(@RequestBody User user, HttpServletRequest request) {
         User user1 = null;
         if (user != null) {
             user1 = findUser(user.getUsername());
         }
-        CustomHttpSessionStatus customHttpSessionStatus = getHttpCustomSessionStatus(user1, user.getPassword(),request);
+        CustomHttpSessionStatus customHttpSessionStatus = getHttpCustomSessionStatus(user1, user.getPassword(), request);
         return customHttpSessionStatus;
     }
 
@@ -79,11 +66,9 @@ public class AuthController {
         } else {
             CsrfToken token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
             httpSessionStatus = new CustomHttpSessionStatus(true, user.getUsername(), token, "ok");
-
             auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         }
         SecurityContextHolder.getContext().setAuthentication(auth);
-        //SecurityContextHolder.getContext().getAuthentication().
         return httpSessionStatus;
     }
 

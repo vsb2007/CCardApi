@@ -11,7 +11,6 @@ public class Role implements GrantedAuthority {
 
     private String name;
 
-
     public String getName() {
         return name;
     }

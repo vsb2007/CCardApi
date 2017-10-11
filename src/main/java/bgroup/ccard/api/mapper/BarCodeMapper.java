@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface BarCodeMapper {
-
     @Results({
             @Result(property = "cardNumber", column = "cardNumber"),
             @Result(property = "orgCode", column = "orgCode"),

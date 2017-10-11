@@ -1,6 +1,5 @@
 package bgroup.ccard.api.mapper;
 
-import bgroup.ccard.api.model.CardBalance;
 import bgroup.ccard.api.model.CardTransactions;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
@@ -8,7 +7,6 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,13 +15,6 @@ import java.util.List;
  */
 @Service
 public interface CardTransactionsMapper {
-
-    /*
-    @Insert("insert into page(page_id,page_header,page_date_create) values(#{pageId},#{pageHeader},#{pageDateCreate})")
-    @SelectKey(statement = " SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
-    void insertDataPage(DataPage dataPage);
-    */
-
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "date", column = "date_tr"),

@@ -1,6 +1,5 @@
 package bgroup.ccard.api.controller;
 
-import bgroup.ccard.api.apiModel.Balance;
 import bgroup.ccard.api.apiModel.BarCode;
 import bgroup.ccard.api.mapper.BarCodeMapper;
 import bgroup.ccard.api.model.BarCodeDetails;
@@ -26,12 +25,18 @@ public class ApiBarCode {
     @RequestMapping(method = RequestMethod.POST)
     public BarCode getBarCode(@RequestParam(value = "card_number", defaultValue = "null") String cardNumber) {
         cardNumber = getRightShortNumber(cardNumber);
-
-        if (barCodeMapper == null) return null;
-        BarCodeDetails barCodeDetails = barCodeMapper.getBarCodeDetailsByNumber(cardNumber);
+        BarCode nullBarCode = new BarCode("error", "barcode not found", null);
+        if (barCodeMapper == null) return nullBarCode;
+        BarCodeDetails barCodeDetails = null;
+        try {
+            barCodeDetails = barCodeMapper.getBarCodeDetailsByNumber(cardNumber);
+        } catch (Exception e) {
+            return nullBarCode;
+        }
+        if (barCodeDetails == null) return nullBarCode;
         RC5 rc5 = new RC5(cardNumber);
         String barCode = rc5.getEncryptBarCodeString(barCodeDetails);
-        if (barCode == null) return new BarCode("error", "barcode not found", null);
+        if (barCode == null) return nullBarCode;
 
         return new BarCode("ok", null, barCode);
     }

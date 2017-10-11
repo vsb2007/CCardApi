@@ -1,11 +1,7 @@
 package bgroup.ccard.api.configuration;
 
-
-import bgroup.ccard.api.mapper.CardBalanceMapper;
-import bgroup.ccard.api.model.CardBalance;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +51,5 @@ public class ConfigurationApp {
     public DataSourceTransactionManager transactionManager() {
         return new DataSourceTransactionManager(getDataSource());
     }
-
-
-
 }
 

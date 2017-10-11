@@ -14,17 +14,8 @@ public class CardTransactions {
     private Double amount;
     private String station;
 
-    /*
-            "date":"1996-12-19T16:39:57-08:00", //rfc3339
-                    "operation":"admission",
-                    "amount":210,
-                    "station":"AZS 31",
-                    */
-
-
     public CardTransactions(Integer id, Date dateDate, String operation, Double amount, String station) {
         this.id = id;
-        //this.date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(dateDate);
         this.date = dateDate;
         this.operation = operation;
         this.amount = amount;

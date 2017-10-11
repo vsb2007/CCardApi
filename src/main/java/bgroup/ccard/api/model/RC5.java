@@ -85,16 +85,14 @@ public class RC5 {
     }
 
     public String getEncryptBarCodeString(BarCodeDetails barCodeDetails) {
-        logger.info("cardnumber: {}", this.cardNumber);
+        //logger.info("cardnumber: {}", this.cardNumber);
         if (barCodeDetails == null) return null;
         StringBuilder cardBulder = new StringBuilder();
         cardBulder.append(String.format("%8s", barCodeDetails.getCardNumber()).replace(' ', '0'));
         cardBulder.append(String.format("%4s", barCodeDetails.getOrgCode()).replace(' ', '0'));
         cardBulder.append(String.format("%6s", barCodeDetails.getClientCode()).replace(' ', '0'));
         cardBulder.append("11");
-        //cardBulder.append(getLunNumber(cardBulder.toString()));
-
-        logger.info("barString: {}", cardBulder.toString());
+        //logger.info("barString: {}", cardBulder.toString());
         String strCard = cardBulder.toString();
         BigInteger vIn = new BigInteger(strCard);
         byte[] bytes = Arrays.copyOf(vIn.toByteArray(), 8);
@@ -139,17 +137,5 @@ public class RC5 {
         digit = sum + "";
         return digit.substring(digit.length() - 1);
     }
-
-
-/*
-    public static void main(String[] args) {
-        String cardNumber = "130273";
-        String orgCode = "1470";
-        String clientCode = "2";
-        RC5 rc5 = new RC5(cardNumber);
-        BarCodeDetails barCodeDetails = new BarCodeDetails(cardNumber, orgCode, clientCode);
-        System.out.println(rc5.getEncryptBarCodeString(barCodeDetails));
-    }
-*/
 }
 

@@ -1,14 +1,11 @@
 package bgroup.ccard.api.model;
 
-
 import java.util.List;
 
 public class User {
 
     private String username;
     private String password;
-
-
     private List<Role> authorities;
 
     public User(String user, String password) {

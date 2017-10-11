@@ -36,8 +36,6 @@ public class ApiController {
         else return new Balance("error", "ничего не найдено", 0.0);
     }
 
-
-
     @RequestMapping(value = {"api/user/transactions"}, method = RequestMethod.POST)
     public Transactions getTransactions(
             @RequestParam(value = "card_number", defaultValue = "null") String cardNumber,
@@ -74,7 +72,6 @@ public class ApiController {
                     return null;
                 }
             }
-
         } else {
             if (station == null) {
                 if (dateStart == null || dateEnd == null) {
@@ -104,6 +101,4 @@ public class ApiController {
         }
         return null;
     }
-
-
 }
