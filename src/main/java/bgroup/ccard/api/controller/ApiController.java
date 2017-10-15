@@ -1,16 +1,20 @@
 package bgroup.ccard.api.controller;
 
+import bgroup.ccard.api.apiInputModel.BalanceRequest;
+import bgroup.ccard.api.apiInputModel.TransactionsRequest;
 import bgroup.ccard.api.apiModel.Balance;
 import bgroup.ccard.api.apiModel.Transactions;
 import bgroup.ccard.api.mapper.CardBalanceMapper;
 import bgroup.ccard.api.mapper.CardTransactionsMapper;
 import bgroup.ccard.api.model.CardBalance;
 import bgroup.ccard.api.model.CardTransactions;
+import bgroup.ccard.api.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +32,8 @@ public class ApiController {
     CardTransactionsMapper cardTransactionsMapper;
 
     @RequestMapping(value = {"api/user/balance"}, method = RequestMethod.POST)
-    public Balance userBalace(@RequestParam(value = "card_number", defaultValue = "null") String cardNumber) {
+    public Balance userBalace(@RequestBody BalanceRequest card) {
+        String cardNumber = card.getCard_number();
         cardNumber = getRightShortNumber(cardNumber);
         CardBalance cardBalance = cardBalanceMapper.findCardBalanceByNumber(cardNumber);
         if (cardBalance != null)
@@ -38,22 +43,22 @@ public class ApiController {
 
     @RequestMapping(value = {"api/user/transactions"}, method = RequestMethod.POST)
     public Transactions getTransactions(
-            @RequestParam(value = "card_number", defaultValue = "null") String cardNumber,
-            @RequestParam(value = "start_date", defaultValue = "null") String startDate,
-            @RequestParam(value = "end_date", defaultValue = "null") String endDate,
-            @RequestParam(value = "station", defaultValue = "null") String station
+            @RequestBody TransactionsRequest transactionsRequest
     ) {
-        if (station.equals("null")) station = null;
-        System.out.println("\n\n" + cardNumber + "\n\n");
+        String station = !transactionsRequest.getStation().equals("") ? transactionsRequest.getStation() : null;
+        logger.info("station: {}", station);
+        String cardNumber = transactionsRequest.getCard_number();
+        String startDate = transactionsRequest.getStart_date();
+        String endDate = transactionsRequest.getEnd_date();
+        //if (station.equals("null")) station = null;
         cardNumber = getRightShortNumber(cardNumber);
-        System.out.println("\n\n" + cardNumber + "\n\n");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date dateStart = null;
         Date dateEnd = null;
         try {
             dateStart = sdf.parse(startDate);
             dateEnd = sdf.parse(endDate);
-        } catch (ParseException e) {
+        } catch (Exception e) {
 
         }
         List<CardTransactions> cardTransactionsList = null;
@@ -73,25 +78,23 @@ public class ApiController {
                 }
             }
         } else {
-            if (station == null) {
-                if (dateStart == null || dateEnd == null) {
-                    cardTransactionsList = cardTransactionsMapper.findCardTransactionsByNumberAndStation(cardNumber, station);
-                    if (cardTransactionsList != null && cardTransactionsList.size() == 0) {
-                        return new Transactions("error", "ничего не найдено", cardTransactionsList);
-                    } else if (cardTransactionsList != null) {
-                        return new Transactions("ok", "", cardTransactionsList);
-                    }
-                } else {
-                    try {
-                        cardTransactionsList = cardTransactionsMapper.findCardTransactionsByNumberAndDateAndStation(cardNumber, station, startDate, endDate);
-                    } catch (Exception e) {
-                        return null;
-                    }
+            if (dateStart == null || dateEnd == null) {
+                cardTransactionsList = cardTransactionsMapper.findCardTransactionsByNumberAndStation(cardNumber, station);
+                if (cardTransactionsList != null && cardTransactionsList.size() == 0) {
+                    return new Transactions("error", "ничего не найдено", cardTransactionsList);
+                } else if (cardTransactionsList != null) {
+                    return new Transactions("ok", "", cardTransactionsList);
+                }
+            } else {
+                try {
+                    cardTransactionsList = cardTransactionsMapper.findCardTransactionsByNumberAndDateAndStation(cardNumber, station, startDate, endDate);
+                } catch (Exception e) {
+                    return null;
                 }
             }
         }
         try {
-            if (cardTransactionsList != null && cardTransactionsList.size() == 0) {
+            if (cardTransactionsList != null && cardTransactionsList.size() == 0 || cardTransactionsList == null) {
                 return new Transactions("error", "ничего не найдено", cardTransactionsList);
             } else if (cardTransactionsList != null) {
                 return new Transactions("ok", "", cardTransactionsList);

@@ -32,6 +32,7 @@ public class AuthController {
 
     @RequestMapping(value = {"api/auth"}, method = RequestMethod.POST)
     public CustomHttpSessionStatus loginJson(@RequestBody User user, HttpServletRequest request) {
+        logger.info("user: {}" + user.getUsername());
         User user1 = null;
         if (user != null) {
             user1 = findUser(user.getUsername());
