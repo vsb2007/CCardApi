@@ -4,10 +4,10 @@ package bgroup.ccard.api.apiInputModel;
  * Created by VSB on 15.10.2017.
  * ccardApi
  */
-public class BarCodeRequest {
+public class PhoneRequest {
     private String card_number;
 
-    public BarCodeRequest() {
+    public PhoneRequest() {
     }
 
     public String getCard_number() {

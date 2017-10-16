@@ -1,14 +1,13 @@
 package bgroup.ccard.api.controller;
 
+import bgroup.ccard.api.apiInputModel.BalanceRequest;
+import bgroup.ccard.api.apiInputModel.BarCodeRequest;
 import bgroup.ccard.api.apiModel.BarCode;
 import bgroup.ccard.api.mapper.BarCodeMapper;
 import bgroup.ccard.api.model.BarCodeDetails;
 import bgroup.ccard.api.model.RC5;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static bgroup.ccard.api.controller.HelpFunctions.getRightShortNumber;
 
@@ -18,13 +17,13 @@ import static bgroup.ccard.api.controller.HelpFunctions.getRightShortNumber;
  */
 @RestController
 @RequestMapping("api/user/barcode")
-public class ApiBarCode {
+public class ApiBarCodeController {
     @Autowired
     BarCodeMapper barCodeMapper;
 
     @RequestMapping(method = RequestMethod.POST)
-    public BarCode getBarCode(@RequestParam(value = "card_number", defaultValue = "null") String cardNumber) {
-        cardNumber = getRightShortNumber(cardNumber);
+    public BarCode getBarCode(@RequestBody BarCodeRequest card) {
+        String cardNumber = getRightShortNumber(card.getCard_number());
         BarCode nullBarCode = new BarCode("error", "barcode not found", null);
         if (barCodeMapper == null) return nullBarCode;
         BarCodeDetails barCodeDetails = null;
