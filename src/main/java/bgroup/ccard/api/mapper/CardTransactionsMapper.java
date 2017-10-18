@@ -183,7 +183,8 @@ public interface CardTransactionsMapper {
     )
     List<CardTransactions> findCardTransactionsByNumberAndDateAndStation(
             @Param(value = "cardNumber") String cardNumber
+            , @Param(value = "station") String station
             , @Param(value = "dateStart") String dateStart
             , @Param(value = "dateEnd") String dateEnd
-            , @Param(value = "station") String station);
+            );
 }

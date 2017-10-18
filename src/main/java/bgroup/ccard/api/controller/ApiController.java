@@ -45,7 +45,10 @@ public class ApiController {
     public Transactions getTransactions(
             @RequestBody TransactionsRequest transactionsRequest
     ) {
-        String station = !transactionsRequest.getStation().equals("") ? transactionsRequest.getStation() : null;
+        String station = null;
+        if (transactionsRequest.getStation() != null && !transactionsRequest.getStation().equals("")) {
+            station = transactionsRequest.getStation();
+        }
         logger.info("station: {}", station);
         String cardNumber = transactionsRequest.getCard_number();
         String startDate = transactionsRequest.getStart_date();
@@ -58,8 +61,10 @@ public class ApiController {
         try {
             dateStart = sdf.parse(startDate);
             dateEnd = sdf.parse(endDate);
+            logger.info("date:{}", dateStart);
+            logger.info("date:{}", dateEnd);
         } catch (Exception e) {
-
+            logger.error(e.toString());
         }
         List<CardTransactions> cardTransactionsList = null;
         if (station == null) {
@@ -94,9 +99,11 @@ public class ApiController {
             }
         }
         try {
-            if (cardTransactionsList != null && cardTransactionsList.size() == 0 || cardTransactionsList == null) {
+            if ((cardTransactionsList != null && cardTransactionsList.size() == 0) || cardTransactionsList == null) {
+                logger.info("пусто");
                 return new Transactions("error", "ничего не найдено", cardTransactionsList);
             } else if (cardTransactionsList != null) {
+                logger.info("нашли кучу транзакций: {}",cardTransactionsList.size());
                 return new Transactions("ok", "", cardTransactionsList);
             }
         } catch (Exception e) {
