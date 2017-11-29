@@ -94,7 +94,13 @@ public class RC5 {
         cardBulder.append("11");
         //logger.info("barString: {}", cardBulder.toString());
         String strCard = cardBulder.toString();
-        BigInteger vIn = new BigInteger(strCard);
+        BigInteger vIn = null;
+        try {
+            vIn = new BigInteger(strCard);
+        }catch (Exception e){
+            logger.error(e.toString());
+            return null;
+        }
         byte[] bytes = Arrays.copyOf(vIn.toByteArray(), 8);
         long[] dataOut = new long[2];
         encrypt(convertBAArrayToLongArray(bytes), dataOut);
