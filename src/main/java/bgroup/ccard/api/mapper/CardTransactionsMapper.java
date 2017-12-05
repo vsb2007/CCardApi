@@ -17,6 +17,7 @@ import java.util.List;
 public interface CardTransactionsMapper {
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "idTr", column = "tr_key"),
             @Result(property = "date", column = "date_tr"),
             @Result(property = "operation", column = "operation"),
             @Result(property = "amount", column = "amount"),
@@ -27,6 +28,7 @@ public interface CardTransactionsMapper {
             "from \n" +
             "(\n" +
             "SELECT\n" +
+            "AccountProtocol.AccountProtocolKey as tr_key,\n" +
             "AccountProtocol.TransferDatetime as date_tr,\n" +
             "'withdraw' as operation,\n" +
             "round(AccountProtocol.TransferBonus,2) as amount,\n" +
@@ -39,6 +41,7 @@ public interface CardTransactionsMapper {
             "where ElectronicNumber = #{cardNumber}\n" +
             "union\n" +
             "SELECT\n" +
+            "bonusprotocol.BonusProtocolKey as tr_key,\n" +
             "bonusprotocol.BonusChangeDatetime as date_tr,\n" +
             "'admission' as operation,\n" +
             "round(bonusprotocol.ChargeBonusSum,2) as amount,\n" +
@@ -56,6 +59,7 @@ public interface CardTransactionsMapper {
 
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "idTr", column = "tr_key"),
             @Result(property = "date", column = "date_tr"),
             @Result(property = "operation", column = "operation"),
             @Result(property = "amount", column = "amount"),
@@ -66,6 +70,7 @@ public interface CardTransactionsMapper {
             "from \n" +
             "(\n" +
             "SELECT\n" +
+            "AccountProtocol.AccountProtocolKey as tr_key,\n" +
             "AccountProtocol.TransferDatetime as date_tr,\n" +
             "'withdraw' as operation,\n" +
             "round(AccountProtocol.TransferBonus,2) as amount,\n" +
@@ -78,6 +83,7 @@ public interface CardTransactionsMapper {
             "where ElectronicNumber = #{cardNumber}\n" +
             "union\n" +
             "SELECT\n" +
+            "bonusprotocol.BonusProtocolKey as tr_key,\n" +
             "bonusprotocol.BonusChangeDatetime as date_tr,\n" +
             "'admission' as operation,\n" +
             "round(bonusprotocol.ChargeBonusSum,2) as amount,\n" +
@@ -100,6 +106,7 @@ public interface CardTransactionsMapper {
 
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "idTr", column = "tr_key"),
             @Result(property = "date", column = "date_tr"),
             @Result(property = "operation", column = "operation"),
             @Result(property = "amount", column = "amount"),
@@ -110,6 +117,7 @@ public interface CardTransactionsMapper {
             "from \n" +
             "(\n" +
             "SELECT\n" +
+            "AccountProtocol.AccountProtocolKey as tr_key,\n" +
             "AccountProtocol.TransferDatetime as date_tr,\n" +
             "'withdraw' as operation,\n" +
             "round(AccountProtocol.TransferBonus,2) as amount,\n" +
@@ -122,6 +130,7 @@ public interface CardTransactionsMapper {
             "where ElectronicNumber = #{cardNumber}\n" +
             "union\n" +
             "SELECT\n" +
+            "bonusprotocol.BonusProtocolKey as tr_key,\n" +
             "bonusprotocol.BonusChangeDatetime as date_tr,\n" +
             "'admission' as operation,\n" +
             "round(bonusprotocol.ChargeBonusSum,2) as amount,\n" +
@@ -144,6 +153,7 @@ public interface CardTransactionsMapper {
 
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "idTr", column = "tr_key"),
             @Result(property = "date", column = "date_tr"),
             @Result(property = "operation", column = "operation"),
             @Result(property = "amount", column = "amount"),
@@ -154,6 +164,7 @@ public interface CardTransactionsMapper {
             "from \n" +
             "(\n" +
             "SELECT\n" +
+            "AccountProtocol.AccountProtocolKey as tr_key,\n" +
             "AccountProtocol.TransferDatetime as date_tr,\n" +
             "'withdraw' as operation,\n" +
             "round(AccountProtocol.TransferBonus,2) as amount,\n" +
@@ -166,6 +177,7 @@ public interface CardTransactionsMapper {
             "where ElectronicNumber = #{cardNumber}\n" +
             "union\n" +
             "SELECT\n" +
+            "bonusprotocol.BonusProtocolKey as tr_key,\n" +
             "bonusprotocol.BonusChangeDatetime as date_tr,\n" +
             "'admission' as operation,\n" +
             "round(bonusprotocol.ChargeBonusSum,2) as amount,\n" +

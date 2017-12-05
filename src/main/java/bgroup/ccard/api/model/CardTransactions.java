@@ -9,13 +9,15 @@ import java.util.Date;
  */
 public class CardTransactions {
     private Integer id;
+    private Integer idTr;
     private Date date;
     private String operation;
     private Double amount;
     private String station;
 
-    public CardTransactions(Integer id, Date dateDate, String operation, Double amount, String station) {
+    public CardTransactions(Integer id, Integer idTr, Date dateDate, String operation, Double amount, String station) {
         this.id = id;
+        this.idTr = idTr;
         this.date = dateDate;
         this.operation = operation;
         this.amount = amount;
@@ -43,5 +45,13 @@ public class CardTransactions {
 
     public String getStation() {
         return station;
+    }
+
+    public Integer getIdTr() {
+        return idTr;
+    }
+
+    public void setIdTr(Integer idTr) {
+        this.idTr = idTr;
     }
 }
