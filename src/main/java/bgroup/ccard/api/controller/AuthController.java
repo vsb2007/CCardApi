@@ -32,12 +32,13 @@ public class AuthController {
 
     @RequestMapping(value = {"api/auth"}, method = RequestMethod.POST)
     public CustomHttpSessionStatus loginJson(@RequestBody User user, HttpServletRequest request) {
-        logger.info("user: {}" + user.getUsername());
+        logger.info("user: {}" , user);
         User user1 = null;
         if (user != null) {
             user1 = findUser(user.getUsername());
         }
         CustomHttpSessionStatus customHttpSessionStatus = getHttpCustomSessionStatus(user1, user.getPassword(), request);
+        logger.info("authResponse:{}",customHttpSessionStatus);
         return customHttpSessionStatus;
     }
 
@@ -72,14 +73,14 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         return httpSessionStatus;
     }
-
+    /*
     @RequestMapping(value = "/api/auth/csrf-token", method = RequestMethod.GET)
     public @ResponseBody
     CsrfToken getCsrfToken(HttpServletRequest request) {
         CsrfToken token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         return token;
     }
-
+    */
     private boolean addRole(User user) {
         Role r = new Role();
         r.setName("ROLE_USER");

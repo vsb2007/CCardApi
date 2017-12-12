@@ -51,4 +51,14 @@ public class CustomHttpSessionStatus {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "CustomHttpSessionStatus{" +
+                "auth=" + auth +
+                ", username='" + username + '\'' +
+                ", message='" + message + '\'' +
+                ", token=" + token +
+                '}';
+    }
 }
