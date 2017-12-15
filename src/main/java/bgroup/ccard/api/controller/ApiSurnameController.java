@@ -4,8 +4,6 @@ import bgroup.ccard.api.apiInputModel.SurnameRequest;
 import bgroup.ccard.api.apiModel.Surname;
 import bgroup.ccard.api.mapper.SurnameMapper;
 import bgroup.ccard.api.model.SurnameModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +19,6 @@ import static bgroup.ccard.api.controller.HelpFunctions.getRightShortNumber;
 @RestController
 @RequestMapping("api/user/surname")
 public class ApiSurnameController {
-
     @Autowired
     SurnameMapper surnameMapper;
 

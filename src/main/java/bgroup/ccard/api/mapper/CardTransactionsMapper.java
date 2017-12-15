@@ -53,6 +53,10 @@ public interface CardTransactionsMapper {
             "left join shops ON bonusprotocol.ShopKey = shops.shopKey\n" +
             "where ElectronicNumber =  #{cardNumber}\n" +
             ")ss, (select @id:=0) AS z\n" +
+            "where ss.tr_key is not null\n" +
+            "and ss.date_tr is not null\n" +
+            "and ss.amount is not null\n" +
+            "and ss.station is not null\n" +
             "order by ss.date_tr\n"
     )
     public List<CardTransactions> findCardTransactionsByNumber(String cardNumber);
@@ -95,7 +99,11 @@ public interface CardTransactionsMapper {
             "left join shops ON bonusprotocol.ShopKey = shops.shopKey\n" +
             "where ElectronicNumber =  #{cardNumber}\n" +
             ")ss, (select @id:=0) AS z\n" +
-            "where ss.date_tr >= #{dateStart} and ss.date_tr < #{dateEnd} + interval 1 day\n" +
+            "where ss.tr_key is not null\n" +
+            "and ss.date_tr is not null\n" +
+            "and ss.amount is not null\n" +
+            "and ss.station is not null\n" +
+            "and ss.date_tr >= #{dateStart} and ss.date_tr < #{dateEnd} + interval 1 day\n" +
             "order by ss.date_tr\n"
     )
     public List<CardTransactions> findCardTransactionsByNumberAndDate(
@@ -142,8 +150,11 @@ public interface CardTransactionsMapper {
             "left join shops ON bonusprotocol.ShopKey = shops.shopKey\n" +
             "where ElectronicNumber =  #{cardNumber}\n" +
             ")ss, (select @id:=0) AS z\n" +
-            "where \n" +
-            "ss.station = #{station}\n" +
+            "where ss.tr_key is not null\n" +
+            "and ss.date_tr is not null\n" +
+            "and ss.amount is not null\n" +
+            "and ss.station is not null\n" +
+            "and ss.station = #{station}\n" +
             "order by ss.date_tr\n"
     )
     List<CardTransactions> findCardTransactionsByNumberAndStation(
@@ -189,7 +200,11 @@ public interface CardTransactionsMapper {
             "left join shops ON bonusprotocol.ShopKey = shops.shopKey\n" +
             "where ElectronicNumber =  #{cardNumber}\n" +
             ")ss, (select @id:=0) AS z\n" +
-            "where ss.date_tr >= #{dateStart} and ss.date_tr < #{dateEnd} + interval 1 day\n" +
+            "where ss.tr_key is not null\n" +
+            "and ss.date_tr is not null\n" +
+            "and ss.amount is not null\n" +
+            "and ss.station is not null\n" +
+            "and ss.date_tr >= #{dateStart} and ss.date_tr < #{dateEnd} + interval 1 day\n" +
             "and ss.station = #{station}\n" +
             "order by ss.date_tr\n"
     )
