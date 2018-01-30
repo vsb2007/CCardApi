@@ -15,12 +15,17 @@ public interface BarCodeMapper {
             @Result(property = "clientCode", column = "clientCode")
     })
     @Select("SELECT \n" +
-            "mycarddate.elnum AS cardNumber\n" +
-            ",o.COD_R AS orgCode\n" +
-            ", p.COD_OWN AS clientCode \n" +
-            "FROM mycarddate\n" +
-            "LEFT JOIN (SELECT PersonKey,OrganizationKey,COD_OWN FROM Person GROUP BY OrganizationKey,COD_OWN) p ON p.PersonKey=mycarddate.PersonKey\n" +
-            "LEFT JOIN (SELECT OrganizationKey,COD_R FROM Organization GROUP BY COD_R) o on  p.OrganizationKey=o.OrganizationKey\n" +
-            "where mycarddate.elnum = #{cardNumber}")
+            "c.ElectronicNumber AS CardNumber,\n" +
+            "o.COD_R AS orgCode, \n" +
+            "MAX(p.COD_OWN) AS clientCode\n" +
+            "FROM card c\n" +
+            "LEFT JOIN Person p ON p.PersonKey = c.PersonKey\n" +
+            "LEFT JOIN Organization o on o.OrganizationKey=p.OrganizationKey\n" +
+            "WHERE \n" +
+            "c.ElectronicNumber =  #{cardNumber}\n" +
+            "and c.PersonKey IS NOT NULL \n" +
+            "AND o.COD_R = 1470\n" +
+            "GROUP BY c.ElectronicNumber\n" +
+            "ORDER BY c.ElectronicNumber")
     public BarCodeDetails getBarCodeDetailsByNumber(@Param(value = "cardNumber") String cardNumber);
 }
