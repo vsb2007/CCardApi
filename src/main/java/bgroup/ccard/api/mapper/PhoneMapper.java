@@ -1,6 +1,5 @@
 package bgroup.ccard.api.mapper;
 
-import bgroup.ccard.api.model.BarCodeDetails;
 import bgroup.ccard.api.model.PhoneModel;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;

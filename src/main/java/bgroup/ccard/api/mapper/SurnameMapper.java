@@ -1,6 +1,5 @@
 package bgroup.ccard.api.mapper;
 
-import bgroup.ccard.api.model.PhoneModel;
 import bgroup.ccard.api.model.SurnameModel;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;

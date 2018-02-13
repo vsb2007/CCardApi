@@ -1,0 +1,5 @@
+jdbc.mysql.driverClassName = com.mysql.jdbc.Driver
+jdbc.mysql.username:user
+jdbc.mysql.password:password
+jdbc.mysql.url = jdbc:mysql://localhost:3306/dbname
+
