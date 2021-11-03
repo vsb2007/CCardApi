@@ -1,13 +1,12 @@
 package bgroup.ccard.api.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Created by VSB on 12.09.2017.
  * ccardApi
  */
-public class CardTransactions {
+public class CardTransactions implements Comparable<CardTransactions> {
     private Integer id;
     private Integer idTr;
     private Date date;
@@ -64,5 +63,10 @@ public class CardTransactions {
 
     public void setStation(String station) {
         this.station = station;
+    }
+
+    @Override
+    public int compareTo(CardTransactions o) {
+        return getDate().compareTo(o.getDate());
     }
 }

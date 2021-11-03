@@ -24,7 +24,7 @@ public class RC5 {
 
     private String cardNumber;
 
-    private int[] snc_key = {0x21, 0xF4, 0x53, 0xA1, 0x9D, 0x02, 0x7C, 0x80, 0xBB, 0x46, 0x14, 0x6E, 0xA5, 0x38, 0x69, 0xD0};
+    private int[] snc_key = {0x7A, 0x10, 0x0C, 0xE4, 0x38, 0xB6, 0x08, 0x59, 0xF1, 0x90, 0x82, 0x49, 0x75, 0x29, 0x4B, 0x6D};
 
     public RC5(String cardNumber) {
         this.cardNumber = cardNumber;
@@ -94,14 +94,17 @@ public class RC5 {
         cardBulder.append("11");
         //logger.info("barString: {}", cardBulder.toString());
         String strCard = cardBulder.toString();
+        //strCard = "10000005440300000511";
+        logger.info("strCard:{}", strCard);
         BigInteger vIn = null;
         try {
             vIn = new BigInteger(strCard);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.toString());
             return null;
         }
-        byte[] bytes = Arrays.copyOf(vIn.toByteArray(), 8);
+        //byte[] bytes = Arrays.copyOf(vIn.toByteArray(), 8);
+        byte[] bytes = (vIn.toByteArray().length <= 8) ? Arrays.copyOf(vIn.toByteArray(), 8) : Arrays.copyOfRange(vIn.toByteArray(), Math.max((vIn.toByteArray().length - 8), 0), vIn.toByteArray().length);
         long[] dataOut = new long[2];
         encrypt(convertBAArrayToLongArray(bytes), dataOut);
         BigInteger vOut = new BigInteger(1, convertLongArrayToBAArray(dataOut));

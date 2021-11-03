@@ -1,5 +1,6 @@
 package bgroup.ccard.api.controller;
 
+import bgroup.ccard.api.Service.FioService;
 import bgroup.ccard.api.apiInputModel.PhoneRequest;
 import bgroup.ccard.api.apiModel.Phone;
 import bgroup.ccard.api.mapper.PhoneMapper;
@@ -16,17 +17,17 @@ import static bgroup.ccard.api.controller.HelpFunctions.getRightShortNumber;
 @RestController
 @RequestMapping("api/user/phone")
 public class ApiPhoneController {
+
     @Autowired
-    PhoneMapper phoneMapper;
+    FioService fioService;
 
     @RequestMapping(method = RequestMethod.POST)
     public Phone getPhone(@RequestBody PhoneRequest card) {
-        String cardNumber = getRightShortNumber(card.getCard_number());
+
         Phone nullPhone = new Phone("error", "phone not found", null);
-        if (phoneMapper == null) return nullPhone;
         PhoneModel phoneModel = null;
         try {
-            phoneModel = phoneMapper.getPhoneByCardNumber(cardNumber);
+            phoneModel = fioService.getPhoneByCardNumber(card);
         } catch (Exception e) {
             return nullPhone;
         }

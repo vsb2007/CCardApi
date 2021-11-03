@@ -41,4 +41,13 @@ public class BarCodeDetails {
     public void setClientCode(String clientCode) {
         this.clientCode = clientCode;
     }
+
+    @Override
+    public String toString() {
+        return "BarCodeDetails{" +
+                "cardNumber='" + cardNumber + '\'' +
+                ", orgCode='" + orgCode + '\'' +
+                ", clientCode='" + clientCode + '\'' +
+                '}';
+    }
 }

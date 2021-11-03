@@ -1,5 +1,6 @@
 package bgroup.ccard.api.controller;
 
+import bgroup.ccard.api.Service.BarCodeService;
 import bgroup.ccard.api.apiInputModel.BalanceRequest;
 import bgroup.ccard.api.apiInputModel.BarCodeRequest;
 import bgroup.ccard.api.apiModel.BarCode;
@@ -23,32 +24,13 @@ public class ApiBarCodeController {
     static final Logger logger = LoggerFactory.getLogger(ApiBarCodeController.class);
 
     @Autowired
-    BarCodeMapper barCodeMapper;
+    BarCodeService barCodeService;
 
     @RequestMapping(method = RequestMethod.POST)
     public BarCode getBarCode(@RequestBody BarCodeRequest card) {
-        String cardNumber = getRightShortNumber(card.getCard_number());
-        logger.info("number for barcode:" + cardNumber);
+        String barCode = barCodeService.getBarCodeString(card);
         BarCode nullBarCode = new BarCode("error", "barcode not found", null);
-        if (barCodeMapper == null) return nullBarCode;
-        BarCodeDetails barCodeDetails = null;
-        try {
-            barCodeDetails = barCodeMapper.getBarCodeDetailsByNumber(cardNumber);
-        } catch (Exception e) {
-            return nullBarCode;
-        }
-        if (barCodeDetails == null) return nullBarCode;
-        logger.info("number for barcode:" + cardNumber);
-        logger.info("barCodeDetails for barcode:{}", barCodeDetails);
-        RC5 rc5 = null;
-        try {
-            rc5 = new RC5(cardNumber);
-        } catch (Exception e) {
-            return nullBarCode;
-        }
-        String barCode = rc5.getEncryptBarCodeString(barCodeDetails);
         if (barCode == null) return nullBarCode;
-
         return new BarCode("ok", null, barCode);
     }
 }

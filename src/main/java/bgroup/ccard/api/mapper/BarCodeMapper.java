@@ -24,7 +24,7 @@ public interface BarCodeMapper {
             "WHERE \n" +
             "c.ElectronicNumber =  #{cardNumber}\n" +
             "and c.PersonKey IS NOT NULL \n" +
-            "AND o.COD_R = 1470\n" +
+            "-- AND o.COD_R = 1470\n" +
             "GROUP BY c.ElectronicNumber\n" +
             "ORDER BY c.ElectronicNumber")
     public BarCodeDetails getBarCodeDetailsByNumber(@Param(value = "cardNumber") String cardNumber);

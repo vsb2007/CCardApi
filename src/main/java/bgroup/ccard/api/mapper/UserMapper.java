@@ -21,7 +21,8 @@ public interface UserMapper {
             "username,\n" +
             "password\n" +
             "from my_users\n" +
-            "where username = #{username}\n"
+            "where username = #{username}\n" +
+            "and enabled=1"
     )
     public User findUserByLogin(
             @Param(value = "username") String username

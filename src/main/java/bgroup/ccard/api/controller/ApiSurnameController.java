@@ -1,5 +1,6 @@
 package bgroup.ccard.api.controller;
 
+import bgroup.ccard.api.Service.FioService;
 import bgroup.ccard.api.apiInputModel.SurnameRequest;
 import bgroup.ccard.api.apiModel.Surname;
 import bgroup.ccard.api.mapper.SurnameMapper;
@@ -20,17 +21,14 @@ import static bgroup.ccard.api.controller.HelpFunctions.getRightShortNumber;
 @RequestMapping("api/user/surname")
 public class ApiSurnameController {
     @Autowired
-    SurnameMapper surnameMapper;
+    FioService fioService;
 
     @RequestMapping(method = RequestMethod.POST)
     public Surname getSurname(@RequestBody SurnameRequest surname) {
-        String cardNumber = getRightShortNumber(surname.getCard_number());
         Surname nullSurname = new Surname("error", "surname not found", null);
-        if (surnameMapper == null) return nullSurname;
         SurnameModel surnameModel = null;
         try {
-
-            surnameModel = surnameMapper.getSurnameByCardNumber(cardNumber);
+            surnameModel = fioService.getSurnameByCardNumber(surname);
         } catch (Exception e) {
             return nullSurname;
         }

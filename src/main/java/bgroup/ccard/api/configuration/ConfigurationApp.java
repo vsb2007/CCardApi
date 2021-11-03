@@ -46,10 +46,29 @@ public class ConfigurationApp {
         dataSource.setPassword(environment.getRequiredProperty("jdbc.mysql.password"));
         return dataSource;
     }
-
+/*
     @Bean
     public DataSourceTransactionManager transactionManager() {
         return new DataSourceTransactionManager(getDataSource());
+    }
+*/
+    @Bean
+    public EnvVariable envVariable() {
+        EnvVariable envVariable = new EnvVariable();
+        envVariable.setXmlApiKey(environment.getRequiredProperty("xml.api.key"));
+        envVariable.setXmlApiUrl(environment.getRequiredProperty("xml.api.url"));
+        envVariable.setXmlApiUrlWrite(environment.getRequiredProperty("xml.api.url.write"));
+        envVariable.setXmlApiUrlRead(environment.getRequiredProperty("xml.api.url.read"));
+        envVariable.setCardPrefix(environment.getRequiredProperty("card.prefix"));
+        envVariable.setCardMifarPrefix(environment.getRequiredProperty("card.mifar.prefix"));
+        envVariable.setXmlApiKeyPc(environment.getRequiredProperty("xml.api.key.pc"));
+        try {
+            envVariable.setXmlApiMethod(environment.getRequiredProperty("xml.api.method"));
+        } catch (Exception e) {
+            envVariable.setXmlApiMethod("POST");
+        }
+        envVariable.setSalt(environment.getRequiredProperty("xml.api.salt"));
+        return envVariable;
     }
 }
 
