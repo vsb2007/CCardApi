@@ -1,0 +1,11 @@
+version: '3'
+services:
+  ccardApi:
+    image: vsb2007/cos-tomcat-ccard-v001:${VER_TAG}
+    #image: vsb2007/cos-tomcat-ccard-v001:latest
+    container_name: ccardApi
+    volumes:
+      - /srv/ccardApi/config/jdbc.properties:/usr/local/tomcat/webapps/ccardApi/WEB-INF/classes/jdbc.properties
+    ports:
+      - 8083:8080/tcp
+    restart: always
