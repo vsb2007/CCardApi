@@ -32,10 +32,28 @@ jobs:
           name: Build
           command: mvn compile war:war
       # Then run your tests!
-      - run:
-          name: Test
-          command: mvn test
-      - store_artifacts:
-          path: target/ccardApi-1.0.war
-          destination: ccardApi-1.0.war
+#      - run:
+#          name: Test
+#          command: mvn test
+       - run:
+           name: Upload Artefact
+           command: |
+                  packaging="war"
+                  file_name="target/ccardApi-1.0.war"
+                  groupId="circleci.sfs.test"
+                  artifactId="ccardApi"
+                  war_version="1.0"
+                  mvn deploy:deploy-file -DgeneratePom=true \
+                    -Dinternal.repo.username=$NEXUS_USERNAME \
+                    -Dinternal.repo.password=$NEXUS_PASSWORD \
+                    -Durl=$NEXUS_MAVEN_URL \
+                    -Dpackaging=$packaging \
+                    -Dfile=$file_name \
+                    -DgroupId=$groupId \
+                    -DartifactId=$artifactId \
+                    -Dversion=$war_version \
+                    || exit 1
+#      - store_artifacts:
+#          path: target/ccardApi-1.0.war
+#          destination: ccardApi-1.0.war
 
