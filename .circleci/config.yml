@@ -39,7 +39,7 @@ jobs:
           name: Test
           command: mvn test
       - store_artifacts:
-          path: $CIRCLE_WORKING_DIRECTORY/target
+          path: target
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
