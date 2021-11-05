@@ -65,8 +65,7 @@ jobs:
     resource_class: vsb2007/small
 
     steps:
-      - run:
-          name: docker ps
+      - run: docker ps
 #      - run:
 #          name: get cli
 #          command: |
