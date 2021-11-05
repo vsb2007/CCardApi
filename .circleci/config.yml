@@ -2,6 +2,12 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+executors:
+  sfs-node:
+    resource_class: vsb2007/small
+    docker:
+      - image:  maven:3.3.9-jdk-8
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -12,11 +18,12 @@ jobs:
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # Be sure to update the Docker image tag below to openjdk version of your application.
     # A list of available CircleCI Docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/openjdk
-    docker:
-      #- image: cimg/openjdk:8.0
-      - image:  maven:3.3.9-jdk-8
-    # Add steps to the job
+#    docker:
+#      #- image: cimg/openjdk:8.0
+#      - image:  maven:3.3.9-jdk-8
+#    # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    executor: sfs-node
     steps:
       # Checkout the code as the first step.
       - checkout
