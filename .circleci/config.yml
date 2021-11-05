@@ -38,6 +38,9 @@ jobs:
       - run:
           name: Test
           command: mvn test
+      - run:
+          name: sleep
+          command: sleep 3600
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
