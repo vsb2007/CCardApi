@@ -12,10 +12,11 @@ executors:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
+  devsecops: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
+      - sca
 
 
 # Define a job to be invoked later in a workflow.
@@ -35,25 +36,31 @@ jobs:
 #      - run:
 #          name: Test
 #          command: mvn test
-      - run:
-          name: Upload Artefact
-          command: |
-            bash ci-cd/set_setting_maven.sh
-            packaging="war"
-            file_name="target/ccardApi-1.0.war"
-            groupId="circleci.sfs.test"
-            artifactId="ccardApi"
-            war_version="1.0"
-            mvn deploy:deploy-file -DgeneratePom=true \
-                    -DrepositoryId=maven-proxy \
-                    -Durl=$NEXUS_MAVEN_URL \
-                    -Dpackaging=$packaging \
-                    -Dfile=$file_name \
-                    -DgroupId=$groupId \
-                    -DartifactId=$artifactId \
-                    -Dversion=$war_version \
-                    || exit 1
+#      - run:
+#          name: Upload Artefact
+#          command: |
+#            bash ci-cd/set_setting_maven.sh
+#            packaging="war"
+#            file_name="target/ccardApi-1.0.war"
+#            groupId="circleci.sfs.test"
+#            artifactId="ccardApi"
+#            war_version="1.0"
+#            mvn deploy:deploy-file -DgeneratePom=true \
+#                    -DrepositoryId=maven-proxy \
+#                    -Durl=$NEXUS_MAVEN_URL \
+#                    -Dpackaging=$packaging \
+#                    -Dfile=$file_name \
+#                    -DgroupId=$groupId \
+#                    -DartifactId=$artifactId \
+#                    -Dversion=$war_version \
+#                    || exit 1
 #      - store_artifacts:
 #          path: target/ccardApi-1.0.war
 #          destination: ccardApi-1.0.war
-
+  sca:
+    executor: sfs-node
+    steps:
+      - run:
+          name: scan
+          command: |
+            docker ps
