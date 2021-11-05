@@ -60,12 +60,8 @@ jobs:
   sca:
     executor: sfs-node
     steps:
-      - setup_remote_docker
       - run:
-          name: scan
-          environment:
-            DOCKER_DRIVER: overlay2
-            DOCKER_HOST: tcp://localhost:2375
-            DOCKER_TLS_CERTDIR: ""
+          name: get cli
           command: |
-            sudo docker ps
+            curl --user $NEXUS_LOGIN:$NEXUS_PASSWORD $HUB_CLI_URL
+            sleep 3600
