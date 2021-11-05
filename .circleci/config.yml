@@ -60,6 +60,7 @@ jobs:
   sca:
     executor: sfs-node
     steps:
+      - setup_remote_docker
       - run:
           name: scan
           environment:
