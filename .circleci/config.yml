@@ -61,24 +61,25 @@ jobs:
 #          destination: ccardApi-1.0.war
   sca:
 #    executor: sfs-node
-    docker:
-      - image: maven:3.3.9-jdk-8
+    machine: true
     resource_class: vsb2007/small
 
     steps:
       - run:
-          name: get cli
-          command: |
-            curl --user $NEXUS_LOGIN:$NEXUS_PASSWORD $HUB_CLI_URL --output hub-ci.zip
-            unzip -p hub-ci.zip tools/appsec-cli.zip > appsec-cli.zip
-            unzip appsec-cli.zip -d appsec-cli
-            python3 appsec-cli/scan_codebase.py \
-                --url  $HUB_URL \
-                --token "${HUB_TOKEN}" \
-                --appcode "$HUB_APP_CODE" \
-                --codebase-url https://github.com/vsb2007/CCardApi.git \
-                --codebase-name "ccard-master" \
-                --codebase-build-tool maven \
-                --branch "master" \
-                --unit "ccard"
-            sleep 3600
+          name: docker ps
+#      - run:
+#          name: get cli
+#          command: |
+#            curl --user $NEXUS_LOGIN:$NEXUS_PASSWORD $HUB_CLI_URL --output hub-ci.zip
+#            unzip -p hub-ci.zip tools/appsec-cli.zip > appsec-cli.zip
+#            unzip appsec-cli.zip -d appsec-cli
+#            python3 appsec-cli/scan_codebase.py \
+#                --url  $HUB_URL \
+#                --token "${HUB_TOKEN}" \
+#                --appcode "$HUB_APP_CODE" \
+#                --codebase-url https://github.com/vsb2007/CCardApi.git \
+#                --codebase-name "ccard-master" \
+#                --codebase-build-tool maven \
+#                --branch "master" \
+#                --unit "ccard"
+#            sleep 3600
