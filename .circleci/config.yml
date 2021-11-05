@@ -63,5 +63,7 @@ jobs:
       - run:
           name: get cli
           command: |
-            curl --user $NEXUS_LOGIN:$NEXUS_PASSWORD $HUB_CLI_URL
+            curl --user $NEXUS_LOGIN:$NEXUS_PASSWORD $HUB_CLI_URL --output hub-ci.zip
+            unzip -p hub-ci.zip tools/appsec-cli.zip > appsec-cli.zip
+            unzip appsec-cli.zip -d appsec-cli
             sleep 3600
