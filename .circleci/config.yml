@@ -38,12 +38,12 @@ jobs:
        - run:
            name: Upload Artefact
            command: |
-                  packaging="war"
-                  file_name="target/ccardApi-1.0.war"
-                  groupId="circleci.sfs.test"
-                  artifactId="ccardApi"
-                  war_version="1.0"
-                  mvn deploy:deploy-file -DgeneratePom=true \
+            packaging="war"
+            file_name="target/ccardApi-1.0.war"
+            groupId="circleci.sfs.test"
+            artifactId="ccardApi"
+            war_version="1.0"
+            mvn deploy:deploy-file -DgeneratePom=true \
                     -Dinternal.repo.username=$NEXUS_USERNAME \
                     -Dinternal.repo.password=$NEXUS_PASSWORD \
                     -Durl=$NEXUS_MAVEN_URL \
