@@ -44,8 +44,8 @@ jobs:
             artifactId="ccardApi"
             war_version="1.0"
             mvn deploy:deploy-file -DgeneratePom=true \
-                    -Dinternal.repo.username=$NEXUS_USERNAME \
-                    -Dinternal.repo.password=$NEXUS_PASSWORD \
+                    -Drepo.login=$NEXUS_USERNAME \
+                    -Drepo.pwd=$NEXUS_PASSWORD \
                     -Durl=$NEXUS_MAVEN_URL \
                     -Dpackaging=$packaging \
                     -Dfile=$file_name \
