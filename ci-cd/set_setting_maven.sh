@@ -9,7 +9,7 @@ echo "
         <servers>
             <server>
               <id>maven-proxy</id>
-              <username>$NEXUS_USERNAME</username>
+              <username>$NEXUS_LOGIN</username>
               <password>$NEXUS_PASSWORD</password>
             </server>
           </servers>
