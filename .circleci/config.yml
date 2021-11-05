@@ -38,14 +38,14 @@ jobs:
       - run:
           name: Upload Artefact
           command: |
+            bash ci-cd/set_setting_maven.sh
             packaging="war"
             file_name="target/ccardApi-1.0.war"
             groupId="circleci.sfs.test"
             artifactId="ccardApi"
             war_version="1.0"
             mvn deploy:deploy-file -DgeneratePom=true \
-                    -Drepo.login=$NEXUS_USERNAME \
-                    -Drepo.pwd=$NEXUS_PASSWORD \
+                    -DrepositoryId=maven-proxy \
                     -Durl=$NEXUS_MAVEN_URL \
                     -Dpackaging=$packaging \
                     -Dfile=$file_name \
