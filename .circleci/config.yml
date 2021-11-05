@@ -4,7 +4,8 @@ version: 2.1
 
 executors:
   sfs-node:
-    machine:
+    #machine:
+    docker:
       image: maven:3.3.9-jdk-8
     resource_class: vsb2007/small
 #    docker:
