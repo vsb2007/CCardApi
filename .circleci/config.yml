@@ -14,8 +14,8 @@ jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   build-and-scan:
     resource_class: vsb2007/small
-      
-    machine: true
+
+    #machine:
       #image: maven:3.3.9-jdk-8
     # These next lines define a Docker executor: https://circleci.com/docs/2.0/executor-types/
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
