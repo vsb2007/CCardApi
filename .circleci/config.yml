@@ -2,18 +2,19 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-executors:
-  sfs-node:
-    resource_class: vsb2007/small
-    docker:
-      - image:  maven:3.3.9-jdk-8
+#executors:
+#  sfs-node:
+#    resource_class: vsb2007/small
+#    docker:
+#      - image:  maven:3.3.9-jdk-8
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   build-and-scan:
-    #resource_class: vsb2007/small
+    resource_class: vsb2007/small
+    machine: true
     # These next lines define a Docker executor: https://circleci.com/docs/2.0/executor-types/
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # Be sure to update the Docker image tag below to openjdk version of your application.
@@ -23,7 +24,7 @@ jobs:
 #      - image:  maven:3.3.9-jdk-8
 #    # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    executor: sfs-node
+#    executor: sfs-node
     steps:
       # Checkout the code as the first step.
       - checkout
