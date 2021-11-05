@@ -35,9 +35,9 @@ jobs:
 #      - run:
 #          name: Test
 #          command: mvn test
-       - run:
-           name: Upload Artefact
-           command: |
+      - run:
+          name: Upload Artefact
+          command: |
             packaging="war"
             file_name="target/ccardApi-1.0.war"
             groupId="circleci.sfs.test"
