@@ -17,7 +17,9 @@ workflows:
       - sca:
           requires:
             - build
-      - sast
+      - sast:
+        requires:
+          - build
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -32,15 +34,14 @@ jobs:
         - run:
             name: Build application
             command: docker run -v $CIRCLE_WORKING_DIRECTORY:/project --rm maven:3.3.9-jdk-8 mvn compile war:war -f /project
-         #Then run your tests!
         - run:
             name: docker build
-            command: docker build -f Dockerfile -t $DOCKER_REGISTRY/docker-image-name:latest .
-        - run:
-            name: docker push
             command: |
               docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY:$DOCKER_REGISTRY_PORT"
-              docker push $DOCKER_REGISTRY/docker-image-name:latest
+              docker build -f Dockerfile -t $DOCKER_REGISTRY:$DOCKER_REGISTRY_PORT/docker-image-name:latest .
+        - run:
+            name: docker push
+            command: docker push $DOCKER_REGISTRY/docker-image-name:latest
     sast:
       executor: sfs-node
       steps:
