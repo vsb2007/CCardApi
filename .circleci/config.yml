@@ -15,6 +15,8 @@ workflows:
     jobs:
       - build
       - sca
+          requires:
+            - build
       - sast
 
 # Define a job to be invoked later in a workflow.
@@ -41,8 +43,6 @@ jobs:
               docker push $DOCKER_REGISTRY/docker-image-name:latest
     sast:
       executor: sfs-node
-      requires:
-        - build
       steps:
         - run:
             name: sast
