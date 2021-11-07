@@ -61,9 +61,9 @@ jobs:
 #          destination: ccardApi-1.0.war
   sca:
 #    executor: sfs-node
-#    machine: true
-    machine: # executor type
-      image: ubuntu-2004:202010-01
+    machine: true
+#    machine: # executor type
+#      image: ubuntu-2004:202010-01
     resource_class: vsb2007/small
 
     steps:
