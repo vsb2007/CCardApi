@@ -45,6 +45,7 @@ jobs:
         - run:
             name: sast
             command: |
+              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" docker.swordfishsecurity.com
               docker run --name hub-cli-codebase --rm docker.swordfishsecurity.com/hub-cli \
                 python3 /opt/scan/scan_codebase.py \
                 --url  $HUB_URL \
