@@ -31,9 +31,9 @@ jobs:
             name: Build
             command: docker run -v $CIRCLE_WORKING_DIRECTORY:/project --rm maven:3.3.9-jdk-8 mvn compile war:war -f /project
          #Then run your tests!
-#        - run:
-#            name: Test
-#            command: mvn test
+        - run:
+            name: docker build
+            command: docker build -t $DOCKER_REGISTRY/docker-image-name:latest -f Dockerfile
 #        - run:
 #            name: Upload Artefact
 #            command: |
