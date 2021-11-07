@@ -41,7 +41,7 @@ jobs:
               docker build -f Dockerfile -t $DOCKER_REGISTRY:$DOCKER_REGISTRY_PORT/docker-image-name:latest .
         - run:
             name: docker push
-            command: docker push $DOCKER_REGISTRY/docker-image-name:latest
+            command: docker push $DOCKER_REGISTRY:$DOCKER_REGISTRY_PORT/docker-image-name:latest
     sast:
       executor: sfs-node
       steps:
