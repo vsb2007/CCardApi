@@ -13,49 +13,49 @@ workflows:
   devsecops: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-#      - build
+      - build
       - sca
-#      - sast
+      - sast
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
-#    build:
-#      executor: sfs-node
-#      steps:
-#        # Checkout the code as the first step.
-#        - checkout
-#        # Use mvn clean and package as the standard maven build phase
-#        - run:
-#            name: Build application
-#            command: docker run -v $CIRCLE_WORKING_DIRECTORY:/project --rm maven:3.3.9-jdk-8 mvn compile war:war -f /project
-#         #Then run your tests!
-#        - run:
-#            name: docker build
-#            command: docker build -f Dockerfile -t $DOCKER_REGISTRY/docker-image-name:latest .
-#        - run:
-#            name: docker push
-#            command: |
-#              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY:$DOCKER_REGISTRY_PORT"
-#              docker push $DOCKER_REGISTRY/docker-image-name:latest
-#    sast:
-#      executor: sfs-node
-#      steps:
-#        - run:
-#            name: sast
-#            command: |
-#              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" docker.swordfishsecurity.com
-#              docker run --name hub-cli-codebase --rm docker.swordfishsecurity.com/hub-cli \
-#                python3 /opt/scan/scan_codebase.py \
-#                --url  $HUB_URL \
-#                --token "$HUB_TOKEN" \
-#                --appcode "$HUB_APP_CODE" \
-#                --codebase-url https://github.com/vsb2007/CCardApi.git \
-#                --codebase-name "ccard-master" \
-#                --codebase-build-tool maven \
-#                --branch "master" \
-#                --unit "ccard"
+    build:
+      executor: sfs-node
+      steps:
+        # Checkout the code as the first step.
+        - checkout
+        # Use mvn clean and package as the standard maven build phase
+        - run:
+            name: Build application
+            command: docker run -v $CIRCLE_WORKING_DIRECTORY:/project --rm maven:3.3.9-jdk-8 mvn compile war:war -f /project
+         #Then run your tests!
+        - run:
+            name: docker build
+            command: docker build -f Dockerfile -t $DOCKER_REGISTRY/docker-image-name:latest .
+        - run:
+            name: docker push
+            command: |
+              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY:$DOCKER_REGISTRY_PORT"
+              docker push $DOCKER_REGISTRY/docker-image-name:latest
+    sast:
+      executor: sfs-node
+      steps:
+        - run:
+            name: sast
+            command: |
+              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" docker.swordfishsecurity.com
+              docker run --name hub-cli-codebase --rm docker.swordfishsecurity.com/hub-cli \
+                python3 /opt/scan/scan_codebase.py \
+                --url  $HUB_URL \
+                --token "$HUB_TOKEN" \
+                --appcode "$HUB_APP_CODE" \
+                --codebase-url https://github.com/vsb2007/CCardApi.git \
+                --codebase-name "ccard-master" \
+                --codebase-build-tool maven \
+                --branch "master" \
+                --unit "ccard"
 
     sca:
       executor: sfs-node
