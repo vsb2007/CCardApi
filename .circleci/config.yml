@@ -2,14 +2,10 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-#executors:
-#  sfs-node:
-#    #machine:
-#    docker:
-#      image: maven:3.3.9-jdk-8
-#    resource_class: vsb2007/small
-#    docker:
-#      - image:  maven:3.3.9-jdk-8
+executors:
+  sfs-node:
+    machine: true
+    resource_class: vsb2007/small
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -60,11 +56,7 @@ jobs:
   #          path: target/ccardApi-1.0.war
   #          destination: ccardApi-1.0.war
   sca:
-    #    executor: sfs-node
-    machine:
-      image: maven:3.3.9-jdk-8
-    resource_class: vsb2007/small
-
+    executor: sfs-node
     steps:
       - run: docker ps
 #      - run:
