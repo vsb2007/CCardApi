@@ -61,8 +61,6 @@ jobs:
 
     sca:
       executor: sfs-node
-      requires:
-        - build
       steps:
         - run:
             name: sast
