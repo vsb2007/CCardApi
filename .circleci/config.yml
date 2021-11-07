@@ -14,8 +14,8 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
 #      - build
-#      - sca
-      - sast
+      - sca
+#      - sast
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -37,9 +37,27 @@ jobs:
 #        - run:
 #            name: docker push
 #            command: |
-#              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY"
+#              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY:$DOCKER_REGISTRY_PORT"
 #              docker push $DOCKER_REGISTRY/docker-image-name:latest
-    sast:
+#    sast:
+#      executor: sfs-node
+#      steps:
+#        - run:
+#            name: sast
+#            command: |
+#              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" docker.swordfishsecurity.com
+#              docker run --name hub-cli-codebase --rm docker.swordfishsecurity.com/hub-cli \
+#                python3 /opt/scan/scan_codebase.py \
+#                --url  $HUB_URL \
+#                --token "$HUB_TOKEN" \
+#                --appcode "$HUB_APP_CODE" \
+#                --codebase-url https://github.com/vsb2007/CCardApi.git \
+#                --codebase-name "ccard-master" \
+#                --codebase-build-tool maven \
+#                --branch "master" \
+#                --unit "ccard"
+
+    sca:
       executor: sfs-node
       steps:
         - run:
@@ -47,14 +65,17 @@ jobs:
             command: |
               docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" docker.swordfishsecurity.com
               docker run --name hub-cli-codebase --rm docker.swordfishsecurity.com/hub-cli \
-                python3 /opt/scan/scan_codebase.py \
+                python3 /opt/scan/scan_artifact.py \
                 --url  $HUB_URL \
-                --token "${HUB_TOKEN}" \
+                --token "$HUB_TOKEN" \
                 --appcode "$HUB_APP_CODE" \
-                --codebase-url https://github.com/vsb2007/CCardApi.git \
-                --codebase-name "ccard-master" \
-                --codebase-build-tool maven \
-                --branch "master" \
+                --artifact-name "docker-image-name.docker" \
+                --artifact-type docker \
+                --version "latest" \
+                --docker-registry $DOCKER_REGISTRY \
+                --docker-registry-port "$DOCKER_REGISTRY_PORT" \
+                --docker-image "docker-image-name"\
+                --repository-name "$DOCKER_REGISTRY_NAME" \
                 --unit "ccard"
 
 
