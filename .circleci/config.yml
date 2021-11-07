@@ -13,52 +13,52 @@ workflows:
   devsecops: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      #      - build-and-test
-      - sca
-
+      - build
+#      - sca
+#      - sast
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
-  #  build-and-test:
-  #    executor: sfs-node
-  #    steps:
-  #      # Checkout the code as the first step.
-  #      - checkout
-  #      # Use mvn clean and package as the standard maven build phase
-  #      - run:
-  #          name: Build
-  #          command: mvn compile war:war
-  #       #Then run your tests!
-  #      - run:
-  #          name: Test
-  #          command: mvn test
-  #      - run:
-  #          name: Upload Artefact
-  #          command: |
-  #            bash ci-cd/set_setting_maven.sh
-  #            packaging="war"
-  #            file_name="target/ccardApi-1.0.war"
-  #            groupId="circleci.sfs.test"
-  #            artifactId="ccardApi"
-  #            war_version="1.0"
-  #            mvn deploy:deploy-file -DgeneratePom=true \
-  #                    -DrepositoryId=maven-proxy \
-  #                    -Durl=$NEXUS_MAVEN_URL \
-  #                    -Dpackaging=$packaging \
-  #                    -Dfile=$file_name \
-  #                    -DgroupId=$groupId \
-  #                    -DartifactId=$artifactId \
-  #                    -Dversion=$war_version \
-  #                    || exit 1
-  #      - store_artifacts:
-  #          path: target/ccardApi-1.0.war
-  #          destination: ccardApi-1.0.war
-  sca:
-    executor: sfs-node
-    steps:
-      - run: docker ps
+    build:
+      executor: sfs-node
+      steps:
+        # Checkout the code as the first step.
+        - checkout
+        # Use mvn clean and package as the standard maven build phase
+        - run:
+            name: Build
+            command: docker run --rm maven:3.3.9-jdk-8 mvn compile war:war
+         #Then run your tests!
+#        - run:
+#            name: Test
+#            command: mvn test
+#        - run:
+#            name: Upload Artefact
+#            command: |
+#              bash ci-cd/set_setting_maven.sh
+#              packaging="war"
+#              file_name="target/ccardApi-1.0.war"
+#              groupId="circleci.sfs.test"
+#              artifactId="ccardApi"
+#              war_version="1.0"
+#              mvn deploy:deploy-file -DgeneratePom=true \
+#                      -DrepositoryId=maven-proxy \
+#                      -Durl=$NEXUS_MAVEN_URL \
+#                      -Dpackaging=$packaging \
+#                      -Dfile=$file_name \
+#                      -DgroupId=$groupId \
+#                      -DartifactId=$artifactId \
+#                      -Dversion=$war_version \
+#                      || exit 1
+#        - store_artifacts:
+#            path: target/ccardApi-1.0.war
+#            destination: ccardApi-1.0.war
+#  sca:
+#    executor: sfs-node
+#    steps:
+#      - run: docker ps
 #      - run:
 #          name: get cli
 #          command: |
