@@ -45,9 +45,6 @@ jobs:
         - run:
             name: sast
             command: |
-#            curl --user $NEXUS_LOGIN:$NEXUS_PASSWORD $HUB_CLI_URL --output hub-ci.zip
-#            unzip -p hub-ci.zip tools/appsec-cli.zip > appsec-cli.zip
-#            unzip appsec-cli.zip -d appsec-cli
               docker run --name hub-cli-codebase --rm docker.swordfishsecurity.com/hub-cli \
                 python3 /opt/scan/scan_codebase.py \
                 --url  $HUB_URL \
@@ -58,3 +55,8 @@ jobs:
                 --codebase-build-tool maven \
                 --branch "master" \
                 --unit "ccard"
+
+
+#            curl --user $NEXUS_LOGIN:$NEXUS_PASSWORD $HUB_CLI_URL --output hub-ci.zip
+#            unzip -p hub-ci.zip tools/appsec-cli.zip > appsec-cli.zip
+#            unzip appsec-cli.zip -d appsec-cli
