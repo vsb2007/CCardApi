@@ -33,7 +33,7 @@ jobs:
          #Then run your tests!
         - run:
             name: docker build
-            command: docker build -t $DOCKER_REGISTRY/docker-image-name:latest -f Dockerfile
+            command: docker build -f Dockerfile -t $DOCKER_REGISTRY/docker-image-name:latest .
         - run:
             name: docker push
             command: |
