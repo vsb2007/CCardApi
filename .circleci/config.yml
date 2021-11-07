@@ -28,12 +28,17 @@ jobs:
         - checkout
         # Use mvn clean and package as the standard maven build phase
         - run:
-            name: Build
+            name: Build application
             command: docker run -v $CIRCLE_WORKING_DIRECTORY:/project --rm maven:3.3.9-jdk-8 mvn compile war:war -f /project
          #Then run your tests!
         - run:
             name: docker build
             command: docker build -t $DOCKER_REGISTRY/docker-image-name:latest -f Dockerfile
+        - run:
+            name: docker push
+            command: |
+              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY"
+              docker push $DOCKER_REGISTRY/docker-image-name:latest
 #        - run:
 #            name: Upload Artefact
 #            command: |
