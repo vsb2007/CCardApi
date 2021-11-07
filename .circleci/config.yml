@@ -41,6 +41,8 @@ jobs:
               docker push $DOCKER_REGISTRY/docker-image-name:latest
     sast:
       executor: sfs-node
+      requires:
+        - build
       steps:
         - run:
             name: sast
@@ -59,6 +61,8 @@ jobs:
 
     sca:
       executor: sfs-node
+      requires:
+        - build
       steps:
         - run:
             name: sast
